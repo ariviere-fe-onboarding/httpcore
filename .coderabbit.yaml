@@ -1,0 +1,62 @@
+# yaml-language-server: $schema=https://coderabbit.ai/integrations/schema.v2.json
+language: en-US
+reviews:
+  profile: chill
+  high_level_summary: true
+  high_level_summary_in_walkthrough: true
+  collapse_walkthrough: true
+  changed_files_summary: true
+  sequence_diagrams: true
+  estimate_code_review_effort: true
+  assess_linked_issues: true
+  related_issues: false
+  related_prs: false
+  suggested_labels: false
+  suggested_reviewers: false
+  poem: false
+  in_progress_fortune: false
+  auto_review:
+    enabled: true
+    auto_incremental_review: false
+    drafts: false
+  pre_merge_checks:
+    title:
+      mode: "off"
+    description:
+      mode: "off"
+    docstrings:
+      mode: "off"
+    issue_assessment:
+      mode: warning
+  finishing_touches:
+    autofix:
+      enabled: true
+    fix_ci:
+      enabled: true
+    docstrings:
+      enabled: false
+    unit_tests:
+      enabled: false
+  path_instructions:
+    - path: "httpcore/_async/**"
+      instructions: >-
+        Check whether async changes have corresponding generated synchronous code
+        where applicable. For changes to connection ownership or cleanup, check
+        cancellation, reentrancy, and whether a request slot returns to the pool.
+knowledge_base:
+  jira:
+    usage: enabled
+    project_keys:
+      - KAN
+  code_guidelines:
+    enabled: true
+    filePatterns:
+      - files: ".github/PULL_REQUEST_TEMPLATE.md"
+        applyTo: "httpcore/**/*.py"
+  automatic_linking_mode: disabled
+  linked_repositories:
+    - repository: "ariviere-fe-onboarding/httpx"
+      instructions: >-
+        HTTPX uses HTTPCore for its default HTTP transport. When a change affects
+        response streaming or connection cleanup, inspect the transport adapter
+        in httpx/_transports/default.py and the client lifecycle in httpx/_client.py.
